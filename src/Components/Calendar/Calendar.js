@@ -10,7 +10,7 @@ function Calendar() {
 
   const fetchHighlightedDates = async () => {
     try {
-      const response = await fetch('/api/highlighted-dates');
+      const response = await fetch('http://localhost:3001/api/highlighted-dates');
       if (response.ok) {
         const data = await response.json();
         setHighlightedDates(data);
@@ -26,7 +26,7 @@ function Calendar() {
 
   const handleBook = async (bookingData) => {
     try {
-      const response = await fetch('/api/bookings', {
+      const response = await fetch('http://localhost:3001/api/bookings', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,10 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { Pool } = require('pg');
+const cors = require('cors');
 
 const app = express();
 const port = process.env.PORT || 3001;
 
+app.use(cors());
 app.use(bodyParser.json());
 
 const pool = new Pool({
@@ -13,6 +15,20 @@ const pool = new Pool({
   database: 'ejgoluto',
   password: 'jYkSgqFIraH6ofWe7psObkQjt-rxVPs0',
   port: 5432,
+});
+
+app.get('/api/highlighted-dates', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM highlighted_dates');
+    const highlightedDates = {};
+    result.rows.forEach(row => {
+      highlightedDates[row.date.toISOString().split('T')[0]] = row.color;
+    });
+    res.json(highlightedDates);
+  } catch (error) {
+    console.error('Error fetching highlighted dates:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
 
 app.post('/api/bookings', async (req, res) => {
@@ -30,6 +46,11 @@ app.post('/api/bookings', async (req, res) => {
     console.error('Error inserting booking into the database:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
+});
+
+// This route will handle any requests not handled by the previous routes
+app.use((req, res) => {
+  res.status(404).json({ error: 'Not Found' });
 });
 
 app.listen(port, () => {

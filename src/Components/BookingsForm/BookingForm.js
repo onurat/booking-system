@@ -29,7 +29,7 @@ function BookingForm({ date, onBook, className }) {
     };
 
     try {
-      const response = await fetch('/api/bookings', {
+      const response = await fetch('http://localhost:3001/api/bookings', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
