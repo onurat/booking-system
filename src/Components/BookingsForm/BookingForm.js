@@ -25,6 +25,13 @@ function BookingForm({ date, onBook, className }) {
     if (isSubmitting) return;
     setIsSubmitting(true);
 
+    // Check if any field is empty
+    if (!name || !phone || !email) {
+      alert("Please fill out all fields.");
+      setIsSubmitting(false);
+      return;
+    }
+
     const bookingData = {
       name,
       phone,
