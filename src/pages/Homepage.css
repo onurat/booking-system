@@ -1,0 +1,35 @@
+.homepage-container {
+    display: flex;
+  }
+  
+  .legend-container {
+    flex: 0 0 auto; 
+    padding-right: 20px; 
+  }
+  
+  .legend {
+  }
+  
+  .legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .legend-color {
+    width: 20px; 
+    height: 20px;
+    margin-right: 10px; 
+  }
+  .green {
+    background-color: green;
+  }
+  
+  .orange {
+    background-color: orange;
+  }
+  
+  .red {
+    background-color: red;
+  }
+  
