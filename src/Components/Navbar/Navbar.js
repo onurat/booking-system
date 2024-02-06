@@ -12,7 +12,7 @@ function Navbar() {
   return (
     <div className="navbar">
       <div className="navbar-title">
-        <h1>Animals & Farms</h1>
+        <h1>Booking System</h1>
       </div>
       <nav>
         <ul>
