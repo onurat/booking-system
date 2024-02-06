@@ -45,14 +45,14 @@ app.post('/api/bookings', async (req, res) => {
 
   try {
     const existingBookingResult = await pool.query(
-      'SELECT COUNT(*) as count FROM bookings WHERE selected_date = $1',
-      [selectedDate]
+      'SELECT COUNT(*) as count FROM bookings WHERE selected_date = $1 AND email = $2',
+      [selectedDate, email]
     );
 
     const existingBookingCount = existingBookingResult.rows[0].count;
 
     if (existingBookingCount > 0) {
-      res.status(409).json({ message: 'A booking already exists for this date. Please choose another date.' });
+      res.status(409).json({ message: 'You have already booked for this date.' });
     } else {
       const result = await pool.query(
         'INSERT INTO bookings (name, phone, email, selected_date) VALUES ($1, $2, $3, $4) RETURNING id',
@@ -67,6 +67,7 @@ app.post('/api/bookings', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
