@@ -10,7 +10,8 @@ function Bookings() {
 
   const fetchBookings = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/bookings');
+      const response = await fetch('https://booking-system-api-oo1q.onrender.com/api/bookings
+      ');
       if (response.ok) {
         const data = await response.json();
         setBookings(data);
