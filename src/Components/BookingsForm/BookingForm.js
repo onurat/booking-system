@@ -25,7 +25,20 @@ function BookingForm({ date, onBook, className }) {
     if (isSubmitting) return;
     setIsSubmitting(true);
 
-    // Check if any field is empty
+    const phonePattern = /^\d{10}$/;
+    if (!phone.match(phonePattern)) {
+      alert("Please enter a valid phone number (10 digits).");
+      setIsSubmitting(false);
+      return;
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.match(emailPattern)) {
+      alert("Please enter a valid email address.");
+      setIsSubmitting(false);
+      return;
+    }
+
     if (!name || !phone || !email) {
       alert("Please fill out all fields.");
       setIsSubmitting(false);
@@ -78,7 +91,7 @@ function BookingForm({ date, onBook, className }) {
           onChange={handleInputChange}
         />
         <input
-          type="text"
+          type="tel"
           name="phone"
           placeholder="Phone"
           value={phone}
