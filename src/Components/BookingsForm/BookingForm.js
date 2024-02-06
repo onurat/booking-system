@@ -40,7 +40,6 @@ function BookingForm({ date, onBook, className }) {
         },
         body: JSON.stringify(bookingData),
       });
-
       if (response.ok) {
         alert("Your booking is successful");
         onBook(bookingData);

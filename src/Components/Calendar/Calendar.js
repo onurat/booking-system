@@ -11,7 +11,8 @@ function Calendar() {
 
   const fetchHighlightedDates = async () => {
     try {
-      const bookingCountResponse = await fetch('http://localhost:3001/api/booking-counts');
+      const bookingCountResponse = await fetch('https://booking-system-api-oo1q.onrender.com/api/booking-counts');
+
 
       if (bookingCountResponse.ok) {
         const bookingCountData = await bookingCountResponse.json();
