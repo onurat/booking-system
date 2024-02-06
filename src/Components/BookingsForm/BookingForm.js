@@ -22,7 +22,6 @@ function BookingForm({ date, onBook, className }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Prevent multiple submissions
     if (isSubmitting) return;
     setIsSubmitting(true);
 
@@ -34,7 +33,7 @@ function BookingForm({ date, onBook, className }) {
     };
 
     try {
-      const response = await fetch('http://localhost:3001/api/bookings', {
+      const response = await fetch('https://booking-system-api-oo1q.onrender.com/api/bookings', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
