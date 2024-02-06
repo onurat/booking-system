@@ -20,14 +20,16 @@ function BookingForm({ date, onBook, className }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const bookingData = {
       name,
       phone,
       email,
       selectedDate: date,
     };
-
+  
+    console.log('Submitting booking:', bookingData);
+  
     try {
       const response = await fetch('http://localhost:3001/api/bookings', {
         method: 'POST',
@@ -36,7 +38,9 @@ function BookingForm({ date, onBook, className }) {
         },
         body: JSON.stringify(bookingData),
       });
-
+  
+      console.log('Booking response:', response);
+  
       if (response.ok) {
         onBook(bookingData);
         setName('');
@@ -50,6 +54,8 @@ function BookingForm({ date, onBook, className }) {
       console.error('Network error:', error);
     }
   };
+  
+  
 
   return (
     <div className={`booking-form ${className}`}>

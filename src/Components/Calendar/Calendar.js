@@ -10,13 +10,30 @@ function Calendar() {
 
   const fetchHighlightedDates = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/highlighted-dates');
-      if (response.ok) {
-        const data = await response.json();
-        setHighlightedDates(data);
+      const bookingCountResponse = await fetch('http://localhost:3001/api/booking-counts');
+
+      if (bookingCountResponse.ok) {
+        const bookingCountData = await bookingCountResponse.json();
+
+        const updatedHighlightedDates = {};
+        
+        for (const dateStr in bookingCountData) {
+          const count = bookingCountData[dateStr] || 0;
+          if (count === 0) {
+            updatedHighlightedDates[dateStr] = 'green';
+          } else if (count >= 5) {
+            updatedHighlightedDates[dateStr] = 'red';
+          } else if (count >= 2) {
+            updatedHighlightedDates[dateStr] = 'orange';
+          } else {
+            updatedHighlightedDates[dateStr] = 'green';
+          }
+        }
+
+        setHighlightedDates(updatedHighlightedDates);
       }
     } catch (error) {
-      console.error('Error fetching highlighted dates:', error);
+      console.error('Error fetching data:', error);
     }
   };
 
@@ -35,12 +52,17 @@ function Calendar() {
       });
 
       if (response.ok) {
+        alert("Your booking is successful");
         await fetchHighlightedDates();
+      } else if (response.status === 409) {
+        alert("Booking unsuccessful. Date is full.");
       } else {
         console.error('Error submitting booking.');
+        alert("Failed to book. Please try again later.");
       }
     } catch (error) {
       console.error('Network error:', error);
+      alert("Failed to book. Please check your network connection.");
     }
 
     setBookingFormDate(null);
@@ -78,7 +100,7 @@ function Calendar() {
         row.push(<div key={keyForDay} className="calendar-day empty">{""}</div>);
       } else {
         const currentDate = new Date(date.getFullYear(), date.getMonth(), dayCount);
-        const isHighlighted = highlightedDates[currentDate.toDateString()];
+        const isHighlighted = highlightedDates[currentDate.toISOString().split('T')[0]];
         keyForDay = `day-${i}-${j}-${dayCount}`;
         row.push(
           <div
@@ -99,7 +121,7 @@ function Calendar() {
     <div className="calendar">
       <div className="calendar-header">
         <button onClick={() => setDate(new Date(date.getFullYear(), date.getMonth() - 1))}>&lt;</button>
-        <span>{date.toLocaleString('en-US', { month: 'long', year: 'numeric' })}</span>
+        <span>{date.toLocaleString('en-GB', { month: 'long', year: 'numeric' })}</span>
         <button onClick={() => setDate(new Date(date.getFullYear(), date.getMonth() + 1))}>&gt;</button>
       </div>
       <div className="calendar-days-header">
