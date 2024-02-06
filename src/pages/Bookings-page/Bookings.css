@@ -1,0 +1,35 @@
+.bookings-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.bookings-box {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.booking-list {
+  list-style: none;
+  padding: 0;
+}
+
+.booking-item {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.no-bookings {
+  margin-top: 20px;
+  color: #888;
+}
+
+.booking-info {
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: #555;
+}

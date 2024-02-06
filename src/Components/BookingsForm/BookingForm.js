@@ -48,13 +48,13 @@ function BookingForm({ date, onBook, className }) {
         setName('');
         setPhone('');
         setEmail('');
+      } else if (response.status === 409) {
+        setIsDateAvailable(false);
       } else {
         console.error('Error submitting booking.');
-        alert("Failed to book. Please try again later.");
       }
     } catch (error) {
       console.error('Network error:', error);
-      alert("Failed to book. Please check your network connection.");
     } finally {
       setIsSubmitting(false);
     }

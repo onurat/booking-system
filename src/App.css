@@ -9,7 +9,6 @@ body {
   color: #333;
   margin: 0;
   padding: 0;
-  overflow: hidden;
 }
 .calendar-and-form {
   display: flex;

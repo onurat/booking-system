@@ -30,6 +30,16 @@ app.get('/api/booking-counts', async (req, res) => {
   }
 });
 
+app.get('/api/bookings', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM bookings');
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error fetching bookings:', error); 
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 app.post('/api/bookings', async (req, res) => {
   const { name, phone, email, selectedDate } = req.body;
 

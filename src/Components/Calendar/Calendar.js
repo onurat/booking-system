@@ -7,7 +7,7 @@ function Calendar() {
   const [highlightedDates, setHighlightedDates] = useState({});
   const [bookingFormDate, setBookingFormDate] = useState(null);
   const [isBookingFormOpen, setIsBookingFormOpen] = useState(false);
-  const [bookingSuccessful, setBookingSuccessful] = useState(false); // New state
+  const [bookingSuccessful, setBookingSuccessful] = useState(false); 
 
   const fetchHighlightedDates = async () => {
     try {
@@ -51,25 +51,20 @@ function Calendar() {
         },
         body: JSON.stringify(bookingData),
       });
-
+  
       if (response.ok) {
         await fetchHighlightedDates();
         setBookingSuccessful(true);
-      } else if (response.status === 409) {
-        alert("Booking unsuccessful. Date is full.");
-      } else {
-        console.error('Error submitting booking.');
-        alert("Failed to book. Please try again later.");
       }
-    } catch (error) {
-      console.error('Network error:', error);
-      alert("Failed to book. Please check your network connection.");
+    } finally {
+      window.location.reload(); 
+      setBookingFormDate(null);
+      setIsBookingFormOpen(false);
     }
-
-    setBookingFormDate(null);
-    setIsBookingFormOpen(false);
   };
-
+  
+  
+  
   const handleDateClick = (clickedDate) => {
     setBookingFormDate(clickedDate);
     setIsBookingFormOpen(true);
