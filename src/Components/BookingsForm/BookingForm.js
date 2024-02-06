@@ -25,9 +25,9 @@ function BookingForm({ date, onBook, className }) {
     if (isSubmitting) return;
     setIsSubmitting(true);
 
-    const phonePattern = /^\d{10}$/;
+    const phonePattern = /^\+[1-9]\d{1,14}$/; 
     if (!phone.match(phonePattern)) {
-      alert("Please enter a valid phone number (10 digits).");
+      alert("Please enter a valid international phone number.");
       setIsSubmitting(false);
       return;
     }
