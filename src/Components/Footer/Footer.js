@@ -5,7 +5,7 @@ import './Footer.css';
 function Footer() {
   return (
     <div className="footer">
-      <p>&copy; 2023 Animals & Farms</p>
+      <p>&copy; Booking System</p>
       <p>
         <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
       </p>
