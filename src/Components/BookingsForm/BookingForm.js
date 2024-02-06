@@ -6,6 +6,7 @@ function BookingForm({ date, onBook, className }) {
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [isDateAvailable, setIsDateAvailable] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -20,16 +21,18 @@ function BookingForm({ date, onBook, className }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
+    // Prevent multiple submissions
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
     const bookingData = {
       name,
       phone,
       email,
-      selectedDate: date,
+      selectedDate: date.toISOString().split('T')[0],
     };
-  
-    console.log('Submitting booking:', bookingData);
-  
+
     try {
       const response = await fetch('http://localhost:3001/api/bookings', {
         method: 'POST',
@@ -38,24 +41,24 @@ function BookingForm({ date, onBook, className }) {
         },
         body: JSON.stringify(bookingData),
       });
-  
-      console.log('Booking response:', response);
-  
+
       if (response.ok) {
+        alert("Your booking is successful");
         onBook(bookingData);
         setName('');
         setPhone('');
         setEmail('');
-        setIsDateAvailable(true);
       } else {
         console.error('Error submitting booking.');
+        alert("Failed to book. Please try again later.");
       }
     } catch (error) {
       console.error('Network error:', error);
+      alert("Failed to book. Please check your network connection.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
-  
-  
 
   return (
     <div className={`booking-form ${className}`}>
@@ -94,7 +97,7 @@ function BookingForm({ date, onBook, className }) {
         {!isDateAvailable && (
           <p className="error">This date is already booked. Please choose another date.</p>
         )}
-        <button type="submit" disabled={!isDateAvailable}>
+        <button type="submit" disabled={!isDateAvailable || isSubmitting}>
           Book
         </button>
       </form>

@@ -7,6 +7,7 @@ function Calendar() {
   const [highlightedDates, setHighlightedDates] = useState({});
   const [bookingFormDate, setBookingFormDate] = useState(null);
   const [isBookingFormOpen, setIsBookingFormOpen] = useState(false);
+  const [bookingSuccessful, setBookingSuccessful] = useState(false); // New state
 
   const fetchHighlightedDates = async () => {
     try {
@@ -52,8 +53,8 @@ function Calendar() {
       });
 
       if (response.ok) {
-        alert("Your booking is successful");
         await fetchHighlightedDates();
+        setBookingSuccessful(true);
       } else if (response.status === 409) {
         alert("Booking unsuccessful. Date is full.");
       } else {
@@ -116,6 +117,13 @@ function Calendar() {
     }
     calendarRows.push(<div key={`row-${i}`} className="calendar-row">{row}</div>);
   }
+
+  useEffect(() => {
+    if (bookingSuccessful) {
+      alert("Your booking is successful");
+      setBookingSuccessful(false);
+    }
+  }, [bookingSuccessful]);
 
   return (
     <div className="calendar">

@@ -19,23 +19,13 @@ const pool = new Pool({
 app.get('/api/booking-counts', async (req, res) => {
   try {
     const result = await pool.query('SELECT selected_date, COUNT(*) as count FROM bookings GROUP BY selected_date');
-    const bookingCounts = {};
-    result.rows.forEach(row => {
-      bookingCounts[row.selected_date.toISOString().split('T')[0]] = row.count;
-    });
+    const bookingCounts = result.rows.reduce((acc, row) => {
+      acc[row.selected_date.toISOString().split('T')[0]] = row.count;
+      return acc;
+    }, {});
     res.json(bookingCounts);
   } catch (error) {
     console.error('Error fetching booking counts:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
-app.get('/api/bookings', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT * FROM bookings');
-    res.json(result.rows);
-  } catch (error) {
-    console.error('Error fetching bookings:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
@@ -54,7 +44,6 @@ app.post('/api/bookings', async (req, res) => {
     if (existingBookingCount > 0) {
       res.status(409).json({ message: 'A booking already exists for this date. Please choose another date.' });
     } else {
-
       const result = await pool.query(
         'INSERT INTO bookings (name, phone, email, selected_date) VALUES ($1, $2, $3, $4) RETURNING id',
         [name, phone, email, selectedDate]
@@ -67,15 +56,6 @@ app.post('/api/bookings', async (req, res) => {
     console.error('Error inserting booking into the database:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
-});
-
-app.use((req, res) => {
-  res.status(404).json({ error: 'Not Found' });
-});
-
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: 'Internal Server Error' });
 });
 
 app.listen(port, () => {
